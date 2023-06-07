@@ -1,2 +1,3 @@
-# kong-tutorials-observability
-Observability reference configurations for the Kong tutorials.
+# Kong Tutorials - Observability
+
+Observability reference material for the Kong tutorials chapter "Observability".
