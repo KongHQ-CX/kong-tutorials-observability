@@ -1,0 +1,103 @@
+_format_version: "3.0"
+_workspace: default
+consumers:
+- username: anonymous
+  id: dbbe0f1e-d029-4db7-96d1-d24b6214f2c2
+- keyauth_credentials:
+  - key: key1
+  username: user1
+- keyauth_credentials:
+  - key: key2
+  username: user2
+plugins:
+- config:
+    content_type: application/json
+    custom_fields_by_lua: {}
+    flush_timeout: 2
+    headers: {}
+    http_endpoint: http://logstash-logstash:8080
+    keepalive: 60000
+    method: POST
+    queue_size: 1
+    retry_count: 10
+    timeout: 10000
+  enabled: true
+  name: http-log
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+- config:
+    anonymous: dbbe0f1e-d029-4db7-96d1-d24b6214f2c2
+    hide_credentials: false
+    key_in_body: false
+    key_in_header: true
+    key_in_query: true
+    key_names:
+    - apikey
+    run_on_preflight: true
+  enabled: true
+  name: key-auth
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+  - ws
+  - wss
+- config:
+    batch_flush_delay: 3
+    batch_span_count: 200
+    connect_timeout: 1000
+    endpoint: http://jaeger-collector:4318/v1/traces
+    headers: {}
+    read_timeout: 5000
+    resource_attributes: {}
+    send_timeout: 5000
+  enabled: true
+  name: opentelemetry
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+- config:
+    bandwidth_metrics: true
+    latency_metrics: true
+    per_consumer: true
+    status_code_metrics: true
+    upstream_health_metrics: true
+  enabled: true
+  name: prometheus
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+services:
+- connect_timeout: 60000
+  host: echo-server
+  name: echo-server
+  path: /
+  port: 8080
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    methods:
+    - GET
+    name: echo-server-GET
+    path_handling: v0
+    paths:
+    - /echo
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000

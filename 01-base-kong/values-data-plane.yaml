@@ -1,0 +1,85 @@
+image:
+  repository: kong/kong-gateway
+  tag: 3.1.1.1-alpine
+  pullPolicy: IfNotPresent
+
+env:
+  database: "off"
+
+  lua_ssl_trusted_certificate: "/etc/secrets/kong-cluster-cert/tls.crt,system"
+
+  role: data_plane
+  cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+  cluster_control_plane: "kongcp-kong-cluster:8005"
+  cluster_telemetry_endpoint: "kongcp-kong-clustertelemetry:8006"
+
+  # opentelemetry tracing
+  opentelemetry_tracing: "all"
+  opentelemetry_tracing_sampling_rate: "1.0"
+
+  vaults: "off"
+
+  trusted_ips: "10.0.0.0/8"
+  real_ip_header: "X-Real-IP"
+  real_ip_recursive: "on"
+
+secretVolumes:
+- kong-cluster-cert
+
+replicaCount: 1
+
+podAnnotations:
+  prometheus.io/path: "/metrics"
+  prometheus.io/port: "8100"
+  prometheus.io/scrape: "true"
+
+proxy:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: false
+    servicePort: 80
+    containerPort: 80
+  tls:
+    enabled: true
+    containerPort: 443
+    servicePort: 443
+    parameters: []
+  ingress:
+    enabled: true
+    hostname: kong.INGRESS_DOMAIN
+
+status:
+  enabled: true
+
+admin:
+  enabled: false
+
+manager:
+  enabled: false
+
+portal:
+  enabled: false
+
+portalapi:
+  enabled: false
+
+cluster:
+  enabled: false
+
+clustertelemetry:
+  enabled: false
+
+enterprise:
+  enabled: true
+  license_secret: kong-enterprise-license
+  vitals:
+    enabled: true
+
+postgresql:
+  enabled: false
+
+ingressController:
+  enabled: false
+  installCRDs: false

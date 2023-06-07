@@ -1,0 +1,15 @@
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+
+ingress:
+  enabled: true
+  className: null
+  hosts:
+  - host: kibana.INGRESS_DOMAIN
+    paths:
+    - path: /

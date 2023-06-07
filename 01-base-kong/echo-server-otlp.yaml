@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cookie-server
+  labels:
+    app: cookie-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cookie-server
+  template:
+    metadata:
+      labels:
+        app: cookie-server
+    spec:
+      containers:
+      - name: cookie-server
+        image: python:3.8
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        command:
+        - sh
+        args:
+        - -c
+        - pip install flask opentelemetry-distro opentelemetry-exporter-otlp-proto-http; python3 /data/script/app.py
+        ports:
+        - name: http
+          containerPort: 8080
+        volumeMounts:
+        - name: script-volume
+          mountPath: /data/script
+      volumes:
+      - name: script-volume
+        configMap:
+          name: cookie-server-script
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cookie-server
+spec:
+  rules:
+  - host: cookie-server.k3s.jack.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cookie-server
+            port:
+              number: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cookie-server
+  labels:
+    app: cookie-server
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: cookie-server
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cookie-server-script
+data:
+  app.py: |
+    #!/bin/python3
+    from flask import Flask, request
+
+    app = Flask(__name__)
+
+    @app.route('/setcookie')
+    def set_cookie(path):
+      cookie = 'csrftoken=123-456; Secure; Path=/, session=789-0ab; Secure; HttpOnly; Path=/'
+
+      resp.headers['Set-Cookie'] = cookie
+      return response.format('cookie set! -> ' + cookie)
+
+    if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=8080)

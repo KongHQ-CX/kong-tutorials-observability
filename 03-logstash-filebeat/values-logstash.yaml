@@ -1,0 +1,77 @@
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+
+logstashConfig:                                                                   
+  logstash.yml: |                                                                 
+    http.host: 0.0.0.0                                                            
+    xpack.monitoring.enabled: false
+    pipeline.ecs_compatibility: disabled
+ 
+logstashPipeline:
+  logstash.conf: |
+    # Input Plugin to take in log via HTTP
+    input {
+      http {
+        id => "kong-http-logs"
+        host => "0.0.0.0"
+        port => 8080
+        add_field=> { "log_type" => "traffic" }
+      }
+    }
+
+    input {
+      beats {
+        port => 5044
+        add_field=> { "log_type" => "server" }
+      }
+    }
+
+    # set the appropriate destination index
+    filter {
+      if [log_type] == "traffic" {
+        mutate { add_field => { "[@metadata][target_index]" => "traffic-%{+YYYY.MM.dd}" } }
+      } else {
+        mutate { add_field => { "[@metadata][target_index]" => "server-%{+YYYY.MM.dd}" } }
+      }
+    }
+  
+    # Output Plugin
+    output {
+      elasticsearch {
+        hosts => "https://elasticsearch-master:9200"
+        index => "%{[@metadata][target_index]}"
+        ssl_certificate_verification => false
+        user => "elastic"
+        password => "K1ngK0ng"
+      }
+    }
+ 
+# Open the port for HTTP Log ingestion from Kong
+service:
+  annotations: {}
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: beats
+    port: 5044
+    protocol: TCP
+    targetPort: 5044
+
+readinessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /
+    port: http
+    scheme: HTTP
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5

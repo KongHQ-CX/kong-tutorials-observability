@@ -1,0 +1,19 @@
+cassandra:
+  config:
+    cluster_size: 1
+
+collector:
+  service:
+    otlp:
+      http:
+        port: 4318
+  extraEnv:
+  - name: COLLECTOR_OTLP_ENABLED
+    value: "true"
+
+query:
+  ingress:
+    enabled: true
+    ingressClassName: null
+    hosts:
+    - jaeger.INGRESS_DOMAIN

@@ -1,0 +1,25 @@
+antiAffinity: "soft"
+persistence:
+  enabled: false
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+
+replicas: 1
+minimumMasterNodes: 1
+
+secret:
+  password: K1ngK0ng
+
+ingress:
+  enabled: true
+  className: null
+  hosts:
+  - host: elasticsearch.INGRESS_DOMAIN
+    paths:
+    - path: /

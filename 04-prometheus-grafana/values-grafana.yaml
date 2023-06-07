@@ -1,0 +1,7 @@
+env:
+  JAEGER_AGENT_PORT: "5775"
+
+ingress:
+  enabled: true
+  hosts:
+  - grafana.INGRESS_DOMAIN

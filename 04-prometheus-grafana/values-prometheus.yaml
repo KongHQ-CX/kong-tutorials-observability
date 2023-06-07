@@ -1,0 +1,18 @@
+alertmanager:
+  enabled: true
+kubeStateMetrics:
+  enabled: false
+prometheus-node-exporter:
+  enabled: false
+prometheus-pushgateway:
+  enabled: false
+
+server:
+  ingress:
+    enabled: true
+    className: null
+    hosts:
+    - prometheus.INGRESS_DOMAIN
+    paths: /
+  persistentVolume:
+    enabled: false
