@@ -1,19 +1,21 @@
-cassandra:
-  config:
-    cluster_size: 1
+provisionDataStore:
+  cassandra: false
+  elasticsearch: false
 
-collector:
+allInOne:
+  enabled: true
   service:
-    otlp:
-      http:
-        port: 4318
-  extraEnv:
-  - name: COLLECTOR_OTLP_ENABLED
-    value: "true"
-
-query:
+    headless: false
   ingress:
     enabled: true
-    ingressClassName: null
     hosts:
-    - jaeger.INGRESS_DOMAIN
+    - "jaeger.INGRESS_DOMAIN"
+
+storage:
+  type: none
+agent:
+  enabled: false
+collector:
+  enabled: false
+query:
+  enabled: false
