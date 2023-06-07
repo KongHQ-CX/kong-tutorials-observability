@@ -19,3 +19,5 @@ For example:
 ```
 
 This sets up each Ingress object for access from your local network, via the default ingress controlled in your Kubernetes cluster.
+
+After this, follow the same installation guides as the video tutorial from Kong.
