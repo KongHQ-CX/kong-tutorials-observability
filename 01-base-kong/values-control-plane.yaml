@@ -15,7 +15,7 @@ env:
   pg_user: kong
   pg_password: kong
   pg_host: kongcp-postgresql
-  portal_gui_host: "kong-portal.k3s.jack.local"
+  portal_gui_host: "kong-portal.INGRESS_DOMAIN"
   portal_auth: "basic-auth"
   portal_gui_protocol: "https"
   portal_api_url: "https://kong-portalapi.INGRESS_DOMAIN"
