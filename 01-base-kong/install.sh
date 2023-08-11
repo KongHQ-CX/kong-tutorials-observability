@@ -45,7 +45,7 @@ else
 
     # wait for kong to come up
     printf "Waiting for Kong Admin to come up"
-    while [[ "$(curl -k -s -o /dev/null -w ''%{http_code}'' https://kong-admin.${1}})" != "401" ]]; do printf .; sleep 2; done
+    while [[ "$(curl -k -s -o /dev/null -w ''%{http_code}'' https://kong-admin.${1})" != "401" ]]; do printf .; sleep 2; done
     echo ''
 
     # apply configuration
