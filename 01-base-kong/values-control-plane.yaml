@@ -9,16 +9,16 @@ migrations:
 
 env:
   database: postgres
-  admin_api_uri: "https://kong-admin.127.0.0.1"
-  admin_gui_url: "https://kong-manager.127.0.0.1"
+  admin_api_uri: "http://127.0.0.1:8001"
+  admin_gui_url: "http://127.0.0.1:8002"
   pg_database: kong
   pg_user: kong
   pg_password: kong
   pg_host: kongcp-postgresql
-  portal_gui_host: "kong-portal.127.0.0.1"
+  portal_gui_host: "127.0.0.1"
   portal_auth: "basic-auth"
   portal_gui_protocol: "https"
-  portal_api_url: "https://kong-portalapi.127.0.0.1"
+  portal_api_url: "http://127.0.0.1:8004"
   vaults: "off"
 
   role: control_plane
