@@ -1,6 +1,6 @@
 image:
   repository: kong/kong-gateway
-  tag: 3.2.1.0-alpine
+  tag: 3.3.1.0-ubuntu
   pullPolicy: IfNotPresent
 
 migrations:
