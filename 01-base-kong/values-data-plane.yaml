@@ -39,12 +39,12 @@ proxy:
   type: ClusterIP
   http:
     enabled: false
-    servicePort: 80
-    containerPort: 80
+    servicePort: 8000
+    containerPort: 8000
   tls:
     enabled: true
-    containerPort: 443
-    servicePort: 443
+    containerPort: 8443
+    servicePort: 8443
     parameters: []
   ingress:
     enabled: true
