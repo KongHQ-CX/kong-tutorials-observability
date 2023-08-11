@@ -12,7 +12,7 @@ server:
     enabled: true
     className: null
     hosts:
-    - prometheus.INGRESS_DOMAIN
+    - prometheus.127.0.0.1
     paths: /
   persistentVolume:
     enabled: false

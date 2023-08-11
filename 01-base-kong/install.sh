@@ -45,11 +45,11 @@ else
 
     # wait for kong to come up
     printf "Waiting for Kong Admin to come up"
-    while [[ "$(curl -k -s -o /dev/null -w ''%{http_code}'' https://kong-admin.${1})" != "401" ]]; do printf .; sleep 2; done
+    while [[ "$(curl -k -s -o /dev/null -w ''%{http_code}'' http://localhost:8001)" != "401" ]]; do printf .; sleep 2; done
     echo ''
 
     # apply configuration
     echo 'Applying initial Kong deck configuration'
-    deck --tls-skip-verify --kong-addr="https://kong-admin.${1}" --headers="kong-admin-token:K1ngK0ng" sync -s initial-kong.yaml
+    deck --tls-skip-verify --kong-addr="http://localhost:8001" --headers="kong-admin-token:K1ngK0ng" sync -s initial-kong.yaml
   fi
 fi

@@ -20,6 +20,6 @@ ingress:
   enabled: true
   className: null
   hosts:
-  - host: elasticsearch.INGRESS_DOMAIN
+  - host: elasticsearch.127.0.0.1
     paths:
     - path: /

@@ -4,4 +4,4 @@ env:
 ingress:
   enabled: true
   hosts:
-  - grafana.INGRESS_DOMAIN
+  - grafana.127.0.0.1

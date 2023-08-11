@@ -36,19 +36,19 @@ podAnnotations:
 
 proxy:
   enabled: true
-  type: ClusterIP
+  type: LoadBalancer
   http:
-    enabled: false
+    enabled: true
     servicePort: 8000
     containerPort: 8000
   tls:
-    enabled: true
+    enabled: false
     containerPort: 8443
     servicePort: 8443
     parameters: []
   ingress:
-    enabled: true
-    hostname: kong.INGRESS_DOMAIN
+    enabled: false
+    hostname: kong.127.0.0.1
 
 status:
   enabled: true

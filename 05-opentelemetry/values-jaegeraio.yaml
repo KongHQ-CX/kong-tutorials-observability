@@ -9,7 +9,7 @@ allInOne:
   ingress:
     enabled: true
     hosts:
-    - "jaeger.INGRESS_DOMAIN"
+    - "jaeger.127.0.0.1"
 
 storage:
   type: none
