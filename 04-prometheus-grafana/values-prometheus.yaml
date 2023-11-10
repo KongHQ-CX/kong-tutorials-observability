@@ -16,3 +16,6 @@ server:
     paths: /
   persistentVolume:
     enabled: false
+  global:
+    scrape_interval: 5s
+    scrape_timeout: 5s
