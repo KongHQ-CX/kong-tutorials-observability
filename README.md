@@ -2,7 +2,7 @@
 
 Observability reference material for the Kong tutorials chapter "Observability".
 
-## USAGE
+## USAGE
 
 To get running, you need to run the "base script" from the root of this repository.
 
